@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>進貨</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>材料</ion-label>
+      <ion-input readonly [value]="ingredient.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>數量</ion-label>
+      <ion-input type="number" required [(ngModel)]="addQty"></ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button
+        color="danger"
+        fill="solid"
+        shape="round"
+        expand="block"
+        (click)="close()"
+      >
+        取消
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button
+        color="success"
+        fill="solid"
+        shape="round"
+        expand="block"
+        [disabled]="addQty === 0 || addQty === null"
+        (click)="onSubmit()"
+      >
+        確定
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

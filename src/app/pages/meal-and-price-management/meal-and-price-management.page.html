@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>餐點及價格管理</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container [ngSwitch]="tabSelected">
+    <ng-container *ngSwitchCase="'meal'">餐點</ng-container>
+    <ng-container *ngSwitchCase="'discount'">折扣...</ng-container>
+  </ng-container>
+</ion-content>
+
+<ion-footer>
+  <ion-radio-group [(ngModel)]="tabSelected">
+    <ion-row>
+      <ion-col>
+        <ion-item lines="none">
+          <ion-label>餐點</ion-label>
+          <ion-radio value="meal"></ion-radio>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item lines="none">
+          <ion-label>折扣</ion-label>
+          <ion-radio value="discount"></ion-radio>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-radio-group>
+</ion-footer>

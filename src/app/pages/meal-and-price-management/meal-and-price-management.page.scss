@@ -1,0 +1,16 @@
+ion-radio-group {
+  ion-item {
+    --background: rgb(185, 184, 184);
+    --border-radius: 8px;
+    --min-height: 8vh;
+  }
+
+  .item-radio-checked {
+    --background: rgb(226, 224, 224) !important;
+  }
+
+  ion-radio {
+    --color: transparent;
+    --color-checked: transparent;
+  }
+}
