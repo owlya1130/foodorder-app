@@ -11,7 +11,7 @@ import { IngredientService } from 'src/app/services/ingredient.service';
 export class RestockIngredientComponent implements OnInit {
 
   @Input() ingredient: Ingredient;
-  addQty: number = 1;
+  addQty = 1;
 
   constructor(
     private ingredientSvc: IngredientService,
@@ -22,17 +22,17 @@ export class RestockIngredientComponent implements OnInit {
 
   onSubmit() {
     this.ingredientSvc
-      .restockIngredient(this.ingredient.id, this.addQty)
+      .restockIngredient(this.ingredient.uid, this.addQty)
       .subscribe(res => {
-        if(res.status === "ok"){
+        if((res as Ingredient).uid !== null){
           this.modalCtrller.dismiss();
         } else {
-          alert(res.msg);
-        }        
+          alert("進貨失敗");
+        }
       });
   }
 
   close() {
-    this.modalCtrller.dismiss(undefined, "cancel");
+    this.modalCtrller.dismiss(undefined, 'cancel');
   }
 }

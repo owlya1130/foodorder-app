@@ -11,9 +11,10 @@ import { IngredientService } from 'src/app/services/ingredient.service';
 export class AddInventoryComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
-    "name": new FormControl("", Validators.required),
-    "qty": new FormControl(1, Validators.required),
-    "unit": new FormControl("", Validators.required)
+    uid: new FormControl(null),
+    name: new FormControl('', Validators.required),
+    qty: new FormControl(1, Validators.required),
+    unit: new FormControl('', Validators.required)
   });
 
   constructor(
@@ -25,14 +26,14 @@ export class AddInventoryComponent implements OnInit {
 
   onSubmit() {
     this.ingredientSvc
-      .addIngredient(this.form.getRawValue())
+      .saveOrUpdate(this.form.getRawValue())
       .subscribe((data) => {
         this.modalCtrller.dismiss();
       });
   }
 
   close() {
-    this.modalCtrller.dismiss(undefined, "cancel");
+    this.modalCtrller.dismiss(undefined, 'cancel');
   }
 
 }

@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{discountCfg === undefined? '新增' : '編輯'}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form [formGroup]="form">
+    <ion-row>
+      <ion-col>
+        <ion-input formControlName="name" placeholder="name"></ion-input>
+      </ion-col>
+
+      <ng-container formGroupName="rule">
+        <ion-col>
+          <ion-select formControlName="operator" interface="action-sheet">
+            <ion-select-option value="">選擇</ion-select-option>
+            <ion-select-option value="*">x</ion-select-option>
+            <ion-select-option value="-">-</ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col>
+          <ion-input formControlName="value" placeholder="value" type="number"></ion-input>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+  </form>
+  <div style="padding-left: 30px;">
+    <p>x 80 表示打8折</p>
+    <p>- 80 表示折抵80</p>
+  </div>
+
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" fill="solid" shape="round" expand="block" (click)="close()">
+        取消
+      </ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" fill="solid" shape="round" expand="block" [disabled]="form.invalid"
+        (click)="onSubmit()">
+        確定
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

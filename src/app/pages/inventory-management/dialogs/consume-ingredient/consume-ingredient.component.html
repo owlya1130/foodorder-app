@@ -22,21 +22,21 @@
           <ion-radio slot="start" mode="md" value="expired"></ion-radio>
         </ion-item>
       </ion-col>
-      <ion-col *ngIf="ingredientSplitConfig !== null">
+      <ion-col *ngIf="packageToIngredient !== null">
         <ion-item>
           <ion-label>分裝</ion-label>
-          <ion-radio slot="start" mode="md" value="split"></ion-radio>
+          <ion-radio slot="start" mode="md" value="packaged"></ion-radio>
         </ion-item>
       </ion-col>
     </ion-row>
   </ion-radio-group>
   <ion-item>
     <ion-label>數量</ion-label>
-    <ion-input type="number" required [(ngModel)]="consume_qty"></ion-input>
+    <ion-input type="number" required [(ngModel)]="consumeQty"></ion-input>
   </ion-item>
-  <ion-item *ngIf="action === 'split'">
-    <ion-label>每份分裝成{{ingredientSplitConfig.split2name}}</ion-label>
-    <ion-input type="number" required [(ngModel)]="ingredientSplitConfig.split2qty"></ion-input>
+  <ion-item *ngIf="action === 'packaged'">
+    <ion-label>每份分裝成{{packageToIngredient.name}}</ion-label>
+    <ion-input type="number" required [(ngModel)]="packageToIngredient.packageQty"></ion-input>
   </ion-item>
 </ion-content>
 <ion-footer>
@@ -50,7 +50,6 @@
         (click)="close()"
       >
         取消
-        <ion-ripple-effect></ion-ripple-effect>
       </ion-button>
     </ion-col>
     <ion-col>
@@ -59,11 +58,10 @@
         fill="solid"
         shape="round"
         expand="block"
-        [disabled]="addQty === 0 || addQty === null"
+        [disabled]="consumeQty === 0 || consumeQty === null"
         (click)="onSubmit()"
       >
         確定
-        <ion-ripple-effect></ion-ripple-effect>
       </ion-button>
     </ion-col>
   </ion-row>

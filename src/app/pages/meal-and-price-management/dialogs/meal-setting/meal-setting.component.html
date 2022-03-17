@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{mealCfg === undefined? '新增' : '編輯'}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form [formGroup]="form">
+    <ion-list>
+      <ion-item>
+        <ion-label style="color: red;">分類(新增，下拉選單)</ion-label>
+        <ion-input formControlName="name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>餐點</ion-label>
+        <ion-input formControlName="name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>價格</ion-label>
+        <ion-input formControlName="price"></ion-input>
+      </ion-item>
+
+      <ion-item-group>
+        <ion-item-divider>
+          <ion-label>材料</ion-label>
+
+          <ion-buttons slot="end">
+            <ion-button (click)="addMaterial()">
+              <ion-icon name="add-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item-divider>
+
+        <ng-container formArrayName="materials">
+          <ng-container *ngFor="let materialForm of materials.controls; let i = index">
+            <ion-row [formGroup]="materialForm" style="width: 95%;">
+              <ion-col size="6">
+                <ion-select interface="action-sheet" formControlName="id">
+                  <ion-select-option value="">選擇</ion-select-option>
+                  <ion-select-option [value]="ingredient.id" *ngFor="let ingredient of ingredients">{{ingredient.name}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-col>
+              <ion-col size="5">
+                <ion-input formControlName="qty" placeholder="數量" type="number"></ion-input>
+              </ion-col>
+              <ion-col size="1">
+                <ion-button (click)="deleteMaterial(i)" fill="clear">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+        </ng-container>
+      </ion-item-group>
+    </ion-list>
+
+  </form>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" fill="solid" shape="round" expand="block" (click)="close()">
+        取消
+      </ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" fill="solid" shape="round" expand="block"
+        [disabled]="form.invalid || materials.length === 0" (click)="onSubmit()">
+        確定
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Ingredient } from 'src/app/interfaces/ingredient';
-import { IngredientSplitConfig } from 'src/app/interfaces/ingredient-split-config';
-import { IngredientService } from 'src/app/services/ingredient.service';
+import { ConsumeType, IngredientService } from 'src/app/services/ingredient.service';
 
 @Component({
   selector: 'app-consume-ingredient',
@@ -12,9 +11,9 @@ import { IngredientService } from 'src/app/services/ingredient.service';
 export class ConsumeIngredientComponent implements OnInit {
 
   @Input() ingredient: Ingredient;
-  ingredientSplitConfig: IngredientSplitConfig = null;
-  action: string = "expired";
-  consume_qty: number = 1;
+  packageToIngredient: Ingredient = null;
+  action = 'expired';
+  consumeQty = 1;
 
   constructor(
     private ingredientSvc: IngredientService,
@@ -23,32 +22,35 @@ export class ConsumeIngredientComponent implements OnInit {
 
   ngOnInit() {
     this.ingredientSvc
-      .getIngredientSplitConfig(this.ingredient.id)
+      .getPackageList(this.ingredient.uid)
       .subscribe(data => {
-        if (data !== null) {
-          this.ingredientSplitConfig = Object.assign({}, data);
+
+        const packageList = data as Ingredient[];
+        if (packageList.length === 1) {
+          this.packageToIngredient = packageList[0];
         }
       });
   }
 
   onSubmit() {
+    const action = this.action === 'packaged'? ConsumeType.Packaged : ConsumeType.Expired;
     this.ingredientSvc
       .consumeIngredient(
-        this.ingredient.id,
-        this.consume_qty,
-        this.action,
-        this.ingredientSplitConfig?.split2qty
+        this.ingredient.uid,
+        this.consumeQty,
+        action,
+        this.packageToIngredient?.packageQty
       )
       .subscribe(res => {
-        if (res.status === "ok") {
+        if ((res as Ingredient).uid !== null) {
           this.modalCtrller.dismiss();
         } else {
-          alert(res.msg);
+          alert('出貨失敗');
         }
       });
   }
 
   close() {
-    this.modalCtrller.dismiss(undefined, "cancel");
+    this.modalCtrller.dismiss(undefined, 'cancel');
   }
 }
