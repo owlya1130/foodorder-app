@@ -1,9 +1,47 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>time-management</ion-title>
+    <ion-title>用餐時間管理</ion-title>
   </ion-toolbar>
 </ion-header>
-
+<ion-row class="grid-title">
+  <ion-col>
+    <ion-label>桌次</ion-label>
+  </ion-col>
+  <ion-col>
+    <ion-label>點餐時間</ion-label>
+  </ion-col>
+  <ion-col>
+    <ion-label>上菜時間</ion-label>
+  </ion-col>
+  <ion-col>
+    <ion-label>狀態</ion-label>
+  </ion-col>
+  <ion-col>
+    <ion-label>&nbsp;</ion-label>
+  </ion-col>
+</ion-row>
 <ion-content>
+
+  <ion-grid class="grid">
+    <ion-row *ngFor="let diningTable of diningTables">
+      <ion-col>
+        <ion-label>{{diningTable.name}}({{diningTable.seats}}座)</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>點餐時間</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>上菜時間</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-label>可預約/點餐結帳/上菜完畢</ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-button>
+          點餐結帳
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

@@ -9,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-row class="ion-text-center">
+<ion-row class="grid-title">
   <ion-col size="4">
     <ion-label>材料</ion-label>
   </ion-col>
@@ -22,26 +22,28 @@
 </ion-row>
 
 <ion-content>
-  <ion-row class="ion-align-items-center ion-text-center" *ngFor="let ingredient of ingredients; let idx = index">
-    <ion-col size="4">
-      <ion-label>{{ingredient.name}}</ion-label>
-    </ion-col>
-    <ion-col size="4">
-      <ion-label>{{ingredient.qty}}</ion-label>
-    </ion-col>
-    <ion-col size="4">
-      <ion-row>
-        <ion-col>
-          <ion-button color="success" fill="solid" shape="round" expand="block" (click)="restockIngredient(idx)">
-            進貨
-          </ion-button>
-        </ion-col>
-        <ion-col>
-          <ion-button color="danger" fill="solid" shape="round" expand="block" (click)="consumeIngredient(idx)">
-            出貨
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-col>
-  </ion-row>
+  <ion-grid class="grid">
+    <ion-row *ngFor="let ingredient of ingredients; let idx = index">
+      <ion-col size="4">
+        <ion-label>{{ingredient.name}}</ion-label>
+      </ion-col>
+      <ion-col size="4">
+        <ion-label>{{ingredient.qty}}</ion-label>
+      </ion-col>
+      <ion-col size="4">
+        <ion-row>
+          <ion-col>
+            <ion-button color="success" fill="solid" shape="round" expand="block" (click)="restockIngredient(idx)">
+              進貨
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button color="danger" fill="solid" shape="round" expand="block" (click)="consumeIngredient(idx)">
+              出貨
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
