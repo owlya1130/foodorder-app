@@ -1,6 +1,8 @@
-<ion-header>
+<ion-header class="page-header">
   <ion-toolbar>
-    <ion-title>用餐時間管理</ion-title>
+    <ion-title>
+      <ion-label>用餐時間管理</ion-label>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-row class="grid-title">
@@ -37,8 +39,8 @@
         <ion-label>可預約/點餐結帳/上菜完畢</ion-label>
       </ion-col>
       <ion-col>
-        <ion-button>
-          點餐結帳
+        <ion-button (click)="onOrdered('abce')">
+          點餐
         </ion-button>
       </ion-col>
     </ion-row>

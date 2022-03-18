@@ -29,6 +29,7 @@ export class TimeManagementPage implements OnInit {
   }
 
   onOrdered(tableUid: string) {
+    alert("跳轉至點餐頁面");
     alert("完成點餐: "+tableUid);
     alert("點餐時間: "+new Date());
   }

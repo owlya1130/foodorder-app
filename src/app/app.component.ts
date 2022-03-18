@@ -5,12 +5,12 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  public appPages = [
-    { title: '點餐', url: '/foodorder', icon: 'restaurant-outline' },
-    { title: '用餐時間管理', url: '/time-management', icon: 'timer-outline' },
-    { title: '預約', url: '/reservation', icon: 'calendar-number-outline' },
+  appPages = [
+    { title: '點餐(未串接API)', url: '/foodorder', icon: 'restaurant-outline' },
+    { title: '用餐時間管理(未串接API)', url: '/time-management', icon: 'timer-outline' },
+    { title: '預約(UI未處理)', url: '/reservation', icon: 'calendar-number-outline' },
     { title: '庫存管理', url: '/inventory-management', icon: 'storefront-outline' },
-    { title: '餐點及價格管理', url: '/meal-and-price-management', icon: 'cash-outline' }
+    { title: '餐點及價格管理(未串接API)', url: '/meal-and-price-management', icon: 'cash-outline' }
   ];
   constructor() {}
 }

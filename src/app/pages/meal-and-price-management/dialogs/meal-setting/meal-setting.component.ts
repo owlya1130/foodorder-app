@@ -4,6 +4,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { IngredientService } from 'src/app/services/ingredient.service';
 import { MealAndPriceService } from 'src/app/services/meal-and-price.service';
+import { MealClassificationService } from 'src/app/services/meal-classification.service';
+import { Code } from 'src/app/interfaces/code';
 
 @Component({
   selector: 'app-meal-setting',
@@ -15,22 +17,30 @@ export class MealSettingComponent implements OnInit {
   @Input() mealCfg;
   form = new FormGroup({
     id: new FormControl(''),
+    typeUid: new FormControl('', Validators.required),
     name: new FormControl('', Validators.required),
     price: new FormControl(0, [Validators.required, Validators.min(30)]),
     materials: new FormArray([])
   });
-  ingredients = [];
+  classfications: Code[] = [];
+  ingredients: Ingredient[] = [];
 
   constructor(
+    private classificationService: MealClassificationService,
     private ingredientSvc: IngredientService,
     private mpSvc: MealAndPriceService,
     private modalCtrller: ModalController
   ) {
+    this.classificationService
+      .findAll()
+      .subscribe(data => {
+        this.classfications = data as Code[];
+      });
     this.ingredientSvc
-    .findAll()
-    .subscribe(data=>{
-      this.ingredients = data as Ingredient[];
-    });
+      .findAll()
+      .subscribe(data => {
+        this.ingredients = data as Ingredient[];
+      });
   }
 
   get materials(): FormArray {
@@ -38,9 +48,9 @@ export class MealSettingComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.mealCfg !== undefined) {
+    if (this.mealCfg !== undefined) {
       this.form.patchValue(this.mealCfg);
-      for(const material of this.mealCfg.materials) {
+      for (const material of this.mealCfg.materials) {
         this.addMaterial(material);
       }
     } else {
@@ -53,7 +63,7 @@ export class MealSettingComponent implements OnInit {
       id: new FormControl('', Validators.required),
       qty: new FormControl(1, [Validators.required, Validators.min(1)])
     });
-    if(material !== undefined) {
+    if (material !== undefined) {
       form.patchValue(material);
     }
     this.materials.push(form);
@@ -61,7 +71,7 @@ export class MealSettingComponent implements OnInit {
 
   deleteMaterial(idx: number) {
     this.materials.removeAt(idx);
-}
+  }
 
   onSubmit() {
     this.mpSvc
