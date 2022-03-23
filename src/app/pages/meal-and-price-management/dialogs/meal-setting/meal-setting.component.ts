@@ -31,15 +31,17 @@ export class MealSettingComponent implements OnInit {
     private mpSvc: MealAndPriceService,
     private modalCtrller: ModalController
   ) {
-    this.classificationService
+    const subscriber = this.classificationService
       .findAll()
       .subscribe(data => {
-        this.classfications = data as Code[];
+        this.classfications = data;
+        subscriber.unsubscribe();
       });
-    this.ingredientSvc
+    const subscriber1 =this.ingredientSvc
       .findAll()
       .subscribe(data => {
-        this.ingredients = data as Ingredient[];
+        this.ingredients = data;
+        subscriber1.unsubscribe();
       });
   }
 
@@ -74,10 +76,11 @@ export class MealSettingComponent implements OnInit {
   }
 
   onSubmit() {
-    this.mpSvc
+    const subscriber = this.mpSvc
       .updateMealConfig(this.form.getRawValue())
       .subscribe((data) => {
         this.modalCtrller.dismiss();
+        subscriber.unsubscribe();
       });
   }
 

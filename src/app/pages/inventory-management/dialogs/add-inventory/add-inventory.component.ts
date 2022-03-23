@@ -25,10 +25,11 @@ export class AddInventoryComponent implements OnInit {
   ngOnInit() { }
 
   onSubmit() {
-    this.ingredientSvc
+    const subscriber = this.ingredientSvc
       .saveOrUpdate(this.form.getRawValue())
       .subscribe((data) => {
         this.modalCtrller.dismiss();
+        subscriber.unsubscribe();
       });
   }
 

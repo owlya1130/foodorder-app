@@ -11,7 +11,7 @@ export class IngredientService {
   constructor(private http: HttpClient) { }
 
   findAll() {
-    return this.http.get(`${environment.apiHist}/ingredient/list`);
+    return this.http.get<Ingredient[]>(`${environment.apiHist}/ingredient/list`);
   }
 
   saveOrUpdate(ingredient: Ingredient) {
@@ -27,7 +27,7 @@ export class IngredientService {
       uid: ingredientUid,
       qty: qty
     }
-    return this.http.patch(`${environment.apiHist}/ingredient/restock`, ingredientBO);
+    return this.http.patch<Ingredient>(`${environment.apiHist}/ingredient/restock`, ingredientBO);
   }
 
   consumeIngredient(ingredientUid: string, qty: number, action: ConsumeType, packagedQty: number) {
@@ -37,11 +37,11 @@ export class IngredientService {
       action: action,
       packagedQty: packagedQty
     }
-    return this.http.patch(`${environment.apiHist}/ingredient/consume`, ingredientBO);
+    return this.http.patch<Ingredient>(`${environment.apiHist}/ingredient/consume`, ingredientBO);
   }
 
   getPackageList(ingredientUid: string) {
-    return this.http.get(`${environment.apiHist}/ingredient/${ingredientUid}/packagelist`);
+    return this.http.get<Ingredient[]>(`${environment.apiHist}/ingredient/${ingredientUid}/packagelist`);
   }
 }
 

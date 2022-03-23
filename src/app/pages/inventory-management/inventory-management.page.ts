@@ -27,10 +27,11 @@ export class InventoryManagementPage implements OnInit, AfterViewInit {
   }
 
   getIngredients() {
-    this.ingredientSvc
+    const subscriber = this.ingredientSvc
       .findAll()
       .subscribe((data: Ingredient[]) => {
         this.ingredients = data;
+        subscriber.unsubscribe();
       });
   }
 

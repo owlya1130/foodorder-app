@@ -21,14 +21,15 @@ export class RestockIngredientComponent implements OnInit {
   ngOnInit() { }
 
   onSubmit() {
-    this.ingredientSvc
+    const subscriber = this.ingredientSvc
       .restockIngredient(this.ingredient.uid, this.addQty)
       .subscribe(res => {
-        if((res as Ingredient).uid !== null){
+        if(res.uid !== null){
           this.modalCtrller.dismiss();
         } else {
           alert("進貨失敗");
         }
+        subscriber.unsubscribe();
       });
   }
 

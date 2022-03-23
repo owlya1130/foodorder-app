@@ -36,18 +36,20 @@ export class MealAndPriceManagementPage implements OnInit, AfterViewInit {
   }
 
   getMeals() {
-    this.mpSvc
+    const subscriber = this.mpSvc
       .getMeals()
       .subscribe(data => {
         this.mealList = data;
+        subscriber.unsubscribe();
       });
   }
 
   getDiscounts() {
-    this.mpSvc
+    const subscriber = this.mpSvc
     .getDiscounts()
     .subscribe(data=>{
       this.discountList = data;
+      subscriber.unsubscribe();
     });
   }
 

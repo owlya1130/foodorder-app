@@ -1,9 +1,58 @@
-<ion-header>
+<ion-header class="page-header">
   <ion-toolbar>
-    <ion-title>reservation</ion-title>
+    <ion-title>
+      <ion-label>預約</ion-label>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
+<div style="text-align: center;">
+  <input type="date" [value]="queryDateStr" (change)="onQueryDateChg($event)">
+</div>
+
 <ion-content>
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <div fxLayout="column" fxLayoutAlign="start center">
+      <div class="cell cell-header">&nbsp;</div>
+      <div class="cell" *ngFor="let diningTable of diningTables">
+        <ion-label>
+          {{diningTable.name}}({{diningTable.seats}}人)
+        </ion-label>
+      </div>
+    </div>
+    <!-- place-content: center flex-start; -->
+    <div style="overflow-x: scroll;">
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <div *ngFor="let timePeriod of timePeriods">
+          <div class="cell time-cell cell-header">
+            <ion-label>
+              {{timePeriod | date : 'HH:mm'}}
+            </ion-label>
+          </div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let presentData of presentDatas">
+        <div *ngFor="let timePeriod of presentData.timePeriods; let idx = index">
+          <div class="cell time-cell time-period-cell" (click)="addReservation(presentData, idx)">
+            <div *ngIf="timePeriod.reservation" class="reservation-cell" [ngStyle]="{'left': timePeriod.offset*5+'px', 'width': this.resvBlock*150+'px'}" (click)="updateReservation(presentData, idx)">
+              <ion-label>
+                {{timePeriod.reservation.name }}
+                {{timePeriod.reservation.contactNo }}
+                ({{timePeriod.reservation.adults+'+'+ timePeriod.reservation.children}})
+              </ion-label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--
+        <div class="timeperiods" *ngFor="let diningTable of diningTables">
+          <div class="cell time-cell reservation-cell" *ngFor="let timePeriod of timePeriods; let idx = index"
+            >
+
+          </div>
+        </div> -->
 
 </ion-content>

@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>桌號{{table.name}}({{table.seats}}) - {{entity? '修改' : '新增'}}預約</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form [formGroup]="form">
+    <ion-list>
+      <ion-item>
+        <ion-label>預約時間</ion-label>
+        <ion-input formControlName="time" type="datetime-local" [min]="minTime" [max]="maxTime"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>預約人</ion-label>
+        <ion-input formControlName="name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>聯絡電話</ion-label>
+        <ion-input formControlName="contactNo"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>大人</ion-label>
+        <ion-input type="number" formControlName="adults"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>小孩</ion-label>
+        <ion-input type="number" formControlName="children"></ion-input>
+      </ion-item>
+    </ion-list>
+
+  </form>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" fill="solid" shape="round" expand="block" (click)="close()">
+        取消
+      </ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" fill="solid" shape="round" expand="block" [disabled]="form.invalid"
+        (click)="onSubmit()">
+        確定
+
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

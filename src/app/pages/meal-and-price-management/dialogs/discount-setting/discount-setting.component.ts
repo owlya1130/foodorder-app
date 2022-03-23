@@ -32,10 +32,11 @@ export class DiscountSettingComponent implements OnInit {
   }
 
   onSubmit() {
-    this.mpSvc
+    const subscriber = this.mpSvc
       .updateDiscountConfig(this.form.getRawValue())
       .subscribe((data) => {
         this.modalCtrller.dismiss();
+        subscriber.unsubscribe();
       });
   }
 

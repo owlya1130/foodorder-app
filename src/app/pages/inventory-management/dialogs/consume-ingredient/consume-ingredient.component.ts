@@ -21,20 +21,20 @@ export class ConsumeIngredientComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.ingredientSvc
+    const subscriber = this.ingredientSvc
       .getPackageList(this.ingredient.uid)
       .subscribe(data => {
-
-        const packageList = data as Ingredient[];
+        const packageList = data;
         if (packageList.length === 1) {
           this.packageToIngredient = packageList[0];
         }
+        subscriber.unsubscribe();
       });
   }
 
   onSubmit() {
     const action = this.action === 'packaged'? ConsumeType.Packaged : ConsumeType.Expired;
-    this.ingredientSvc
+    const subscriber = this.ingredientSvc
       .consumeIngredient(
         this.ingredient.uid,
         this.consumeQty,
@@ -42,11 +42,12 @@ export class ConsumeIngredientComponent implements OnInit {
         this.packageToIngredient?.packageQty
       )
       .subscribe(res => {
-        if ((res as Ingredient).uid !== null) {
+        if (res.uid !== null) {
           this.modalCtrller.dismiss();
         } else {
           alert('出貨失敗');
         }
+        subscriber.unsubscribe();
       });
   }
 

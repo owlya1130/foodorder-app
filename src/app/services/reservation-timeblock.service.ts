@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { DiningTable } from '../interfaces/dining-table';
+import { Code } from '../interfaces/code';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DiningTableService {
+export class ReservationTimeblockService {
 
   constructor(private http: HttpClient) { }
 
   findAll() {
-    return this.http.get<DiningTable[]>(`${environment.apiHist}/dinningtable/list`);
+    return this.http.get<Code[]>(`${environment.apiHist}/reservation-timeblock/list`);
   }
 }

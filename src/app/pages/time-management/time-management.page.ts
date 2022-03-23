@@ -21,10 +21,11 @@ export class TimeManagementPage implements OnInit {
   }
 
   getDiningTables() {
-    this.diningTableSvc
+    const subscriber = this.diningTableSvc
       .findAll()
       .subscribe(data => {
-        this.diningTables = data as DiningTable[];
+        this.diningTables = data;
+        subscriber.unsubscribe();
       });
   }
 
