@@ -1,4 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { DiscountConfig } from 'src/app/interfaces/discount-config';
+import { Meal } from 'src/app/interfaces/meal';
 import { DialogService } from 'src/app/services/component/dialog.service';
 import { MealAndPriceService } from 'src/app/services/meal-and-price.service';
 import { DiscountSettingComponent } from './dialogs/discount-setting/discount-setting.component';
@@ -12,8 +14,8 @@ import { MealSettingComponent } from './dialogs/meal-setting/meal-setting.compon
 export class MealAndPriceManagementPage implements OnInit, AfterViewInit {
 
   tabSelected = 'meal';
-  mealList = [];
-  discountList = [];
+  meals: Meal[] = [];
+  discountList: DiscountConfig[] = [];
 
   constructor(
     private mpSvc: MealAndPriceService,
@@ -39,7 +41,7 @@ export class MealAndPriceManagementPage implements OnInit, AfterViewInit {
     const subscriber = this.mpSvc
       .getMeals()
       .subscribe(data => {
-        this.mealList = data;
+        this.meals = data;
         subscriber.unsubscribe();
       });
   }
@@ -80,7 +82,7 @@ export class MealAndPriceManagementPage implements OnInit, AfterViewInit {
         this.dlgSvc
           .presentModal(
             MealSettingComponent,
-            { mealCfg: this.mealList[idx]},
+            { mealCfg: this.meals[idx]},
             () => { this.getMeals(); }
           );
         break;

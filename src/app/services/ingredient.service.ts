@@ -22,21 +22,21 @@ export class IngredientService {
     }
   }
 
-  restockIngredient(ingredientUid: string, qty: number) {
+  restockIngredient(ingredientUid: string, theQty: number) {
     const ingredientBO = {
       uid: ingredientUid,
-      qty: qty
-    }
+      qty: theQty
+    };
     return this.http.patch<Ingredient>(`${environment.apiHist}/ingredient/restock`, ingredientBO);
   }
 
-  consumeIngredient(ingredientUid: string, qty: number, action: ConsumeType, packagedQty: number) {
+  consumeIngredient(ingredientUid: string, theQty: number, theAction: ConsumeType, thePackagedQty: number) {
     const ingredientBO = {
       uid: ingredientUid,
-      qty: qty,
-      action: action,
-      packagedQty: packagedQty
-    }
+      qty: theQty,
+      action: theAction,
+      packagedQty: thePackagedQty
+    };
     return this.http.patch<Ingredient>(`${environment.apiHist}/ingredient/consume`, ingredientBO);
   }
 

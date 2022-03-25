@@ -1,88 +1,38 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Meal } from '../interfaces/meal';
+import { DiscountConfig } from '../interfaces/discount-config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MealAndPriceService {
 
-  // 資料庫現有食材庫存
-  private mealList = [{
-    id: '0',
-    name: '雞塊',
-    price: 45,
-    materials: [{
-      id: '0',
-      name: '雞塊(小)',
-      qty: 1
-    }]
-  }, {
-    id: '1',
-    name: '薯條',
-    price: 45,
-    materials: [{
-      id: '2',
-      name: '薯條(小)',
-      qty: 1
-    }]
-  }, {
-    id: '2',
-    name: '肉燥飯',
-    price: 35,
-    materials: [{
-      id: '3',
-      name: '白飯',
-      qty: 1
-    }, {
-      id: '4',
-      name: '肉燥',
-      qty: 1
-    }]
-  }];
+  constructor(private http: HttpClient) { }
 
-  private discountList = [{
-    name: 'VIP',
-    rule: {
-      operator: '*',
-      value: 80
+  getMeals() {
+    return this.http.get<Meal[]>(`${environment.apiHist}/meal/list`);
+  }
+
+  saveOrUpdateMeal(meal: Meal) {
+    if (meal.uid === null) {
+      return this.http.post(`${environment.apiHist}/meal`, meal);
+    } else {
+      return this.http.put(`${environment.apiHist}/meal`, meal);
     }
-  }, {
-    name: '滿500折30',
-    rule: {
-      operator: '-',
-      value: 30
+  }
+
+  getDiscounts() {
+    return this.http.get<DiscountConfig[]>(`${environment.apiHist}/discount-config/list`);
+  }
+
+  updateDiscountConfig(discount) {
+    if (discount.uid === null) {
+      return this.http.post<DiscountConfig>(`${environment.apiHist}/discount-config`, discount);
+    } else {
+      return this.http.put<DiscountConfig>(`${environment.apiHist}/discount-config`, discount);
     }
-  }];
-
-  constructor() { }
-
-  getMeals(): Observable<any> {
-    return new Observable(subscriber=>{
-      subscriber.next(this.mealList);
-      subscriber.complete();
-    });
-  }
-
-  getDiscounts(): Observable<any> {
-    return new Observable(subscriber=>{
-      subscriber.next(this.discountList);
-      subscriber.complete();
-    });
-  }
-
-  updateMealConfig(meal): Observable<any> {
-    return new Observable(subscriber=>{
-      this.mealList.push(meal);
-      subscriber.next(meal);
-      subscriber.complete();
-    });
-  }
-
-  updateDiscountConfig(discount): Observable<any> {
-    return new Observable(subscriber=>{
-      this.discountList.push(discount);
-      subscriber.next(discount);
-      subscriber.complete();
-    });
   }
 }

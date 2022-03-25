@@ -14,22 +14,19 @@
       <ion-col>
         <ion-input formControlName="name" placeholder="name"></ion-input>
       </ion-col>
-
-      <ng-container formGroupName="rule">
-        <ion-col>
-          <ion-select formControlName="operator" interface="action-sheet" placeholder="選擇">
-            <ion-select-option value="*">x</ion-select-option>
-            <ion-select-option value="-">-</ion-select-option>
-          </ion-select>
-        </ion-col>
-        <ion-col>
-          <ion-input formControlName="value" placeholder="value" type="number"></ion-input>
-        </ion-col>
-      </ng-container>
+      <ion-col>
+        <ion-select formControlName="operator" interface="action-sheet" placeholder="選擇">
+          <ion-select-option value="x">x</ion-select-option>
+          <ion-select-option value="-">-</ion-select-option>
+        </ion-select>
+      </ion-col>
+      <ion-col>
+        <ion-input formControlName="value" placeholder="value" type="number"></ion-input>
+      </ion-col>
     </ion-row>
   </form>
   <div style="padding-left: 30px;">
-    <p>x 80 表示打8折</p>
+    <p>x 0.8 表示打8折</p>
     <p>- 80 表示折抵80</p>
   </div>
 

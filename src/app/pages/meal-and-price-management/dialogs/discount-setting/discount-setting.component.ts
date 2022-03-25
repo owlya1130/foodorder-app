@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { DiscountConfig } from 'src/app/interfaces/discount-config';
 import { MealAndPriceService } from 'src/app/services/meal-and-price.service';
 
 @Component({
@@ -10,14 +11,12 @@ import { MealAndPriceService } from 'src/app/services/meal-and-price.service';
 })
 export class DiscountSettingComponent implements OnInit {
 
-  @Input() discountCfg;
+  @Input() discountCfg: DiscountConfig;
   form = new FormGroup({
-    id: new FormControl(''),
+    uid: new FormControl(null),
     name: new FormControl('', Validators.required),
-    rule: new FormGroup({
-      operator: new FormControl('', Validators.required),
-      value: new FormControl('', Validators.required)
-    })
+    operator: new FormControl('', Validators.required),
+    value: new FormControl('', Validators.required)
   });
 
   constructor(
@@ -26,7 +25,7 @@ export class DiscountSettingComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if(this.discountCfg !== undefined) {
+    if (this.discountCfg !== undefined) {
       this.form.patchValue(this.discountCfg);
     }
   }

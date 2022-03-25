@@ -6,6 +6,7 @@ import { IngredientService } from 'src/app/services/ingredient.service';
 import { MealAndPriceService } from 'src/app/services/meal-and-price.service';
 import { MealClassificationService } from 'src/app/services/meal-classification.service';
 import { Code } from 'src/app/interfaces/code';
+import { Meal } from 'src/app/interfaces/meal';
 
 @Component({
   selector: 'app-meal-setting',
@@ -14,13 +15,17 @@ import { Code } from 'src/app/interfaces/code';
 })
 export class MealSettingComponent implements OnInit {
 
-  @Input() mealCfg;
+  @Input() mealCfg: Meal;
   form = new FormGroup({
-    id: new FormControl(''),
-    typeUid: new FormControl('', Validators.required),
+    uid: new FormControl(null),
     name: new FormControl('', Validators.required),
     price: new FormControl(0, [Validators.required, Validators.min(30)]),
-    materials: new FormArray([])
+    classification: new FormGroup({
+      uid: new FormControl('', Validators.required),
+      type: new FormControl(null),
+      name: new FormControl(null)
+    }),
+    mealIngredients: new FormArray([])
   });
   classfications: Code[] = [];
   ingredients: Ingredient[] = [];
@@ -30,54 +35,66 @@ export class MealSettingComponent implements OnInit {
     private ingredientSvc: IngredientService,
     private mpSvc: MealAndPriceService,
     private modalCtrller: ModalController
-  ) {
-    const subscriber = this.classificationService
+  ) { }
+
+  get mealIngredients(): FormArray {
+    return this.form.get('mealIngredients') as FormArray;
+  }
+
+  async ngOnInit() {
+
+    await this.classificationService
       .findAll()
-      .subscribe(data => {
+      .toPromise()
+      .then(data => {
         this.classfications = data;
-        subscriber.unsubscribe();
       });
-    const subscriber1 =this.ingredientSvc
+    await this.ingredientSvc
       .findAll()
-      .subscribe(data => {
+      .toPromise()
+      .then(data => {
         this.ingredients = data;
-        subscriber1.unsubscribe();
       });
-  }
 
-  get materials(): FormArray {
-    return this.form.get('materials') as FormArray;
-  }
-
-  ngOnInit() {
     if (this.mealCfg !== undefined) {
       this.form.patchValue(this.mealCfg);
-      for (const material of this.mealCfg.materials) {
-        this.addMaterial(material);
+      for (const mealIngredient of this.mealCfg.mealIngredients) {
+        this.addIngredient(mealIngredient);
       }
     } else {
-      this.addMaterial();
+      this.addIngredient();
     }
+
   }
 
-  addMaterial(material?) {
+  addIngredient(mealIngredient?: {
+    uid: {
+      mealUid: string;
+      ingredientUid: string;
+    };
+    ingredientQty: number;
+  }) {
     const form = new FormGroup({
-      id: new FormControl('', Validators.required),
-      qty: new FormControl(1, [Validators.required, Validators.min(1)])
+      uid: new FormGroup({
+        mealUid: new FormControl(),
+        ingredientUid: new FormControl(null, Validators.required)
+      }),
+      ingredientQty: new FormControl(1, [Validators.required, Validators.min(1)])
     });
-    if (material !== undefined) {
-      form.patchValue(material);
+    if (mealIngredient !== undefined) {
+      form.patchValue(mealIngredient);
     }
-    this.materials.push(form);
+    this.mealIngredients.push(form);
   }
 
-  deleteMaterial(idx: number) {
-    this.materials.removeAt(idx);
+  deleteIngredient(idx: number) {
+    this.mealIngredients.removeAt(idx);
   }
 
   onSubmit() {
+    console.log(this.form.getRawValue());
     const subscriber = this.mpSvc
-      .updateMealConfig(this.form.getRawValue())
+      .saveOrUpdateMeal(this.form.getRawValue())
       .subscribe((data) => {
         this.modalCtrller.dismiss();
         subscriber.unsubscribe();

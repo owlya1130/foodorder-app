@@ -11,13 +11,17 @@
 <ion-content>
   <form [formGroup]="form">
     <ion-list>
-      <ion-item>
-        <ion-label>分類</ion-label>
-        <ion-select interface="action-sheet" placeholder="選擇" formControlName="typeUid">
-          <ion-select-option [value]="classfication.uid" *ngFor="let classfication of classfications">{{classfication.name}}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
+        <form formGroupName="classification">
+          <ion-item>
+          <ion-label>分類</ion-label>
+          <ion-select interface="action-sheet" placeholder="選擇" formControlName="uid">
+            <ion-select-option [value]="classfication.uid" *ngFor="let classfication of classfications">
+              {{classfication.name}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        </form>
+
       <ion-item>
         <ion-label>餐點</ion-label>
         <ion-input formControlName="name"></ion-input>
@@ -32,26 +36,26 @@
           <ion-label>材料</ion-label>
 
           <ion-buttons slot="end">
-            <ion-button (click)="addMaterial()">
+            <ion-button (click)="addIngredient()">
               <ion-icon name="add-outline"></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-item-divider>
 
-        <ng-container formArrayName="materials">
-          <ng-container *ngFor="let materialForm of materials.controls; let i = index">
-            <ion-row [formGroup]="materialForm" style="width: 95%;">
-              <ion-col size="6">
-                <ion-select interface="action-sheet" placeholder="選擇" formControlName="id">
-                  <ion-select-option [value]="ingredient.id" *ngFor="let ingredient of ingredients">{{ingredient.name}}
+        <ng-container formArrayName="mealIngredients">
+          <ng-container *ngFor="let mealIngredientForm of mealIngredients.controls; let i = index">
+            <ion-row [formGroup]="mealIngredientForm" style="width: 95%;">
+              <ion-col size="6" formGroupName="uid">
+                <ion-select interface="action-sheet" placeholder="選擇" formControlName="ingredientUid">
+                  <ion-select-option [value]="ingredient.uid" *ngFor="let ingredient of ingredients">{{ingredient.name}}
                   </ion-select-option>
                 </ion-select>
               </ion-col>
               <ion-col size="5">
-                <ion-input formControlName="qty" placeholder="數量" type="number"></ion-input>
+                <ion-input formControlName="ingredientQty" placeholder="數量" type="number"></ion-input>
               </ion-col>
               <ion-col size="1">
-                <ion-button (click)="deleteMaterial(i)" fill="clear">
+                <ion-button (click)="deleteIngredient(i)" fill="clear">
                   <ion-icon name="trash-outline"></ion-icon>
                 </ion-button>
               </ion-col>
@@ -72,7 +76,7 @@
     </ion-col>
     <ion-col>
       <ion-button color="success" fill="solid" shape="round" expand="block"
-        [disabled]="form.invalid || materials.length === 0" (click)="onSubmit()">
+        [disabled]="form.invalid || mealIngredients.length === 0" (click)="onSubmit()">
         確定
       </ion-button>
     </ion-col>
