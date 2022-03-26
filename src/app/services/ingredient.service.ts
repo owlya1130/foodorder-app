@@ -16,26 +16,28 @@ export class IngredientService {
 
   saveOrUpdate(ingredient: Ingredient) {
     if (ingredient.uid === null) {
-      return this.http.post(`${environment.apiHist}/ingredient`, ingredient);
+      return this.http.post<Ingredient>(`${environment.apiHist}/ingredient`, ingredient);
     } else {
-      return this.http.put(`${environment.apiHist}/ingredient`, ingredient);
+      return this.http.put<Ingredient>(`${environment.apiHist}/ingredient`, ingredient);
     }
   }
 
-  restockIngredient(ingredientUid: string, theQty: number) {
+  restockIngredient(ingredientUid: string, theQty: number, theComment: string) {
     const ingredientBO = {
       uid: ingredientUid,
-      qty: theQty
+      qty: theQty,
+      comment: theComment
     };
     return this.http.patch<Ingredient>(`${environment.apiHist}/ingredient/restock`, ingredientBO);
   }
 
-  consumeIngredient(ingredientUid: string, theQty: number, theAction: ConsumeType, thePackagedQty: number) {
+  consumeIngredient(ingredientUid: string, theQty: number, theAction: ConsumeType, thePackagedQty: number, theComment: string) {
     const ingredientBO = {
       uid: ingredientUid,
       qty: theQty,
       action: theAction,
-      packagedQty: thePackagedQty
+      packagedQty: thePackagedQty,
+      comment: theComment
     };
     return this.http.patch<Ingredient>(`${environment.apiHist}/ingredient/consume`, ingredientBO);
   }
@@ -47,5 +49,6 @@ export class IngredientService {
 
 export enum ConsumeType {
   Expired,
-	Packaged
+	Packaged,
+  Sold
 }

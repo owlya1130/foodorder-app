@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { FoodorderPageRoutingModule } from './foodorder-routing.module';
 
 import { FoodorderPage } from './foodorder.page';
+import { ModifyOrderQuantityComponent } from './dialogs/modify-order-quantity/modify-order-quantity.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { FoodorderPage } from './foodorder.page';
     IonicModule,
     FoodorderPageRoutingModule
   ],
-  declarations: [FoodorderPage]
+  declarations: [FoodorderPage, ModifyOrderQuantityComponent]
 })
 export class FoodorderPageModule {}

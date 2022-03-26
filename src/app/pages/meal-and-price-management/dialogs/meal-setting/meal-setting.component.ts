@@ -92,7 +92,6 @@ export class MealSettingComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.form.getRawValue());
     const subscriber = this.mpSvc
       .saveOrUpdateMeal(this.form.getRawValue())
       .subscribe((data) => {

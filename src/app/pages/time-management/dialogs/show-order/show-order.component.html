@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>訂單明細({{table}}桌)</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-row>
+    <ion-col style="margin: 0 36px" size=12 *ngFor="let orderLogDetail of orderLogDetails">
+      <ion-label style="font-size: 1.2em;">{{orderLogDetail.meal.name}} x {{orderLogDetail.orderQty}}</ion-label>
+    </ion-col>
+  </ion-row>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" fill="solid" shape="round" expand="block" (click)="close()">
+        關閉
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

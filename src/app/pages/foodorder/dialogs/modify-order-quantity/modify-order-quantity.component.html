@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{mealName}}數量調整</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <ion-item>
+    <ion-label>{{mealName}}</ion-label>
+    <ion-input type="number" [(ngModel)]="quantity"></ion-input>
+  </ion-item>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" fill="solid" shape="round" expand="block" (click)="close()">
+        取消
+      </ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" fill="solid" shape="round" expand="block"
+        (click)="onSubmit()">
+        確定
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

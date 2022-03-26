@@ -12,6 +12,7 @@ export class RestockIngredientComponent implements OnInit {
 
   @Input() ingredient: Ingredient;
   addQty = 1;
+  comment = '';
 
   constructor(
     private ingredientSvc: IngredientService,
@@ -22,12 +23,12 @@ export class RestockIngredientComponent implements OnInit {
 
   onSubmit() {
     const subscriber = this.ingredientSvc
-      .restockIngredient(this.ingredient.uid, this.addQty)
+      .restockIngredient(this.ingredient.uid, this.addQty, this.comment)
       .subscribe(res => {
         if(res.uid !== null){
           this.modalCtrller.dismiss();
         } else {
-          alert("進貨失敗");
+          alert('進貨失敗');
         }
         subscriber.unsubscribe();
       });

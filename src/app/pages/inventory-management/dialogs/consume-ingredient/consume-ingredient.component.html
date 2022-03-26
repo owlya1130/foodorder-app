@@ -38,6 +38,10 @@
     <ion-label>每份分裝成{{packageToIngredient.name}}</ion-label>
     <ion-input type="number" required [(ngModel)]="packageToIngredient.packageQty"></ion-input>
   </ion-item>
+  <ion-item>
+    <ion-label>備註</ion-label>
+    <ion-textarea [(ngModel)]="comment"></ion-textarea>
+  </ion-item>
 </ion-content>
 <ion-footer>
   <ion-row>

@@ -14,6 +14,7 @@ export class ConsumeIngredientComponent implements OnInit {
   packageToIngredient: Ingredient = null;
   action = 'expired';
   consumeQty = 1;
+  comment = '';
 
   constructor(
     private ingredientSvc: IngredientService,
@@ -39,7 +40,8 @@ export class ConsumeIngredientComponent implements OnInit {
         this.ingredient.uid,
         this.consumeQty,
         action,
-        this.packageToIngredient?.packageQty
+        this.packageToIngredient?.packageQty,
+        this.comment
       )
       .subscribe(res => {
         if (res.uid !== null) {

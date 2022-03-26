@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ComponentProps, ComponentRef } from '@ionic/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,8 @@ import { ModalController } from '@ionic/angular';
 export class DialogService {
 
   constructor(
-    private modalCtrller: ModalController
+    private modalCtrller: ModalController,
+    private alertCtrller: AlertController
   ) { }
 
   async presentModal(
@@ -34,5 +35,46 @@ export class DialogService {
         success();
       }
     });
+  }
+
+  async presentAlertConfirm(headerMsg: string,  msg: string) {
+    const alert = await this.alertCtrller.create({
+      backdropDismiss: false,
+      cssClass: 'my-custom-class',
+      header: headerMsg,
+      message: msg,
+      buttons: [
+        {
+          text: '取消',
+          role: 'cancel',
+          cssClass: 'secondary',
+          id: 'cancel-button'
+        }, {
+          text: '確定',
+          role: 'confirm',
+          id: 'confirm-button'
+        }
+      ]
+    });
+
+    await alert.present();
+    return alert;
+  }
+
+  async presentAlert(headerMsg: string,  msg: string) {
+    const alert = await this.alertCtrller.create({
+      cssClass: 'my-custom-class',
+      header: headerMsg,
+      message: msg,
+      buttons: [{
+          text: '確定',
+          role: 'confirm',
+          id: 'confirm-button'
+        }
+      ]
+    });
+
+    await alert.present();
+    return alert;
   }
 }

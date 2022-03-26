@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { TimeManagementPageRoutingModule } from './time-management-routing.module';
 
 import { TimeManagementPage } from './time-management.page';
+import { ShowOrderComponent } from './dialogs/show-order/show-order.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { TimeManagementPage } from './time-management.page';
     IonicModule,
     TimeManagementPageRoutingModule
   ],
-  declarations: [TimeManagementPage]
+  declarations: [TimeManagementPage, ShowOrderComponent]
 })
 export class TimeManagementPageModule {}

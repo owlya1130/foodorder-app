@@ -1,6 +1,12 @@
+import { OrderLog } from './../../interfaces/order-log';
 import { Component, OnInit } from '@angular/core';
+import { forkJoin } from 'rxjs';
 import { DiningTable } from 'src/app/interfaces/dining-table';
 import { DiningTableService } from 'src/app/services/dining-table.service';
+import { OrderLogService } from 'src/app/services/order-log.service';
+import { NavController } from '@ionic/angular';
+import { DialogService } from 'src/app/services/component/dialog.service';
+import { ShowOrderComponent } from './dialogs/show-order/show-order.component';
 
 @Component({
   selector: 'app-time-management',
@@ -9,40 +15,92 @@ import { DiningTableService } from 'src/app/services/dining-table.service';
 })
 export class TimeManagementPage implements OnInit {
 
-  diningTables: DiningTable[] = [];
+  tableLogs: TableLog[] = [];
 
   constructor(
-    private diningTableSvc: DiningTableService
-  ) {
-    this.getDiningTables();
+    private diningTableSvc: DiningTableService,
+    private orderLogSvc: OrderLogService,
+    private dlgSvc: DialogService,
+    private navCtrl: NavController
+  ) { }
+
+  ngOnInit() { }
+
+  ionViewWillEnter() {
+    this.getData();
   }
 
-  ngOnInit() {
+  getData() {
+    const forks = [];
+    forks.push(this.diningTableSvc.findAll());
+    forks.push(this.orderLogSvc.findAll());
+    const subscriber = forkJoin(forks).subscribe(data => {
+      const tables = data[0] as TableLog[];
+      const orderLogs = data[1] as OrderLog[];
+
+      for (const orderLog of orderLogs) {
+        const tableUid = orderLog.tableUid;
+        for (const table of tables) {
+          if (table.uid === tableUid) {
+            table.orderLog = orderLog;
+            break;
+          }
+        }
+      }
+      this.tableLogs = tables;
+      subscriber.unsubscribe();
+    });
   }
 
-  getDiningTables() {
-    const subscriber = this.diningTableSvc
-      .findAll()
-      .subscribe(data => {
-        this.diningTables = data;
-        subscriber.unsubscribe();
+  onOrdered(idx: number) {
+    this.navCtrl.navigateForward(
+      '/foodorder',
+      {
+        queryParams: {
+          tableUid: this.tableLogs[idx].uid
+        }
       });
   }
 
-  onOrdered(tableUid: string) {
-    alert("跳轉至點餐頁面");
-    alert("完成點餐: "+tableUid);
-    alert("點餐時間: "+new Date());
+  onServed(idx: number) {
+    const orderLog = this.tableLogs[idx].orderLog;
+    orderLog.serveTime = new Date();
+    this.orderLogSvc
+      .saveOrUpdate(orderLog)
+      .subscribe(data => {
+        if (data) {
+          this.getData();
+        }
+      });
   }
 
-  onServed(tableUid: string) {
-    alert("完成上菜: "+tableUid);
-    alert("上菜時間: "+new Date());
+  onCleared(idx: number) {
+    const orderLog = this.tableLogs[idx].orderLog;
+    orderLog.cleanTime = new Date();
+    this.orderLogSvc
+      .saveOrUpdate(orderLog)
+      .subscribe(data => {
+        if (data) {
+          this.getData();
+        }
+      });
   }
 
-  onCleared(tableUid: string) {
-    alert("完成清潔: "+tableUid);
-    alert("清潔時間: "+new Date());
+  showOrder(idx: number) {
+    const orderLog = this.tableLogs[idx].orderLog;
+    if (orderLog !== undefined) {
+      this.dlgSvc
+        .presentModal(
+          ShowOrderComponent,
+          {
+            table: this.tableLogs[idx].name,
+            orderLogDetails: orderLog.details
+          }
+        );
+    }
   }
+}
 
+interface TableLog extends DiningTable {
+  orderLog: OrderLog;
 }

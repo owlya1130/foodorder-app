@@ -25,25 +25,49 @@
 <ion-content>
 
   <ion-grid class="grid">
-    <ion-row *ngFor="let diningTable of diningTables">
+    <ion-row class="order-log"
+     *ngFor="let tableLog of tableLogs; let idx = index">
       <ion-col>
-        <ion-label>{{diningTable.name}}({{diningTable.seats}}座)</ion-label>
+        <ion-label>{{tableLog.name}}({{tableLog.seats}}座)</ion-label>
+      </ion-col>
+      <ion-col (click)="showOrder(idx)">
+        <ion-label>{{tableLog.orderLog?.orderTime | date : 'yyyy/MM/dd HH:mm'}}</ion-label>
       </ion-col>
       <ion-col>
-        <ion-label>點餐時間</ion-label>
+        <ion-label>{{tableLog.orderLog?.serveTime | date : 'yyyy/MM/dd HH:mm'}}</ion-label>
       </ion-col>
-      <ion-col>
-        <ion-label>上菜時間</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-label>可預約/點餐結帳/上菜完畢</ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-button (click)="onOrdered('abce')">
-          點餐
-        </ion-button>
-      </ion-col>
+      <ng-container *ngIf="tableLog.orderLog?.serveTime;else ordered">
+        <ion-col>
+          <ion-label>上菜完畢</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-button (click)="onCleared(idx)">
+            清潔
+          </ion-button>
+        </ion-col>
+      </ng-container>
+      <ng-template #ordered>
+        <ng-container *ngIf="tableLog.orderLog?.orderTime;else reservation">
+          <ion-col>
+            <ion-label>點餐結帳</ion-label>
+          </ion-col>
+          <ion-col>
+            <ion-button (click)="onServed(idx)">
+              上菜
+            </ion-button>
+          </ion-col>
+        </ng-container>
+      </ng-template>
+      <ng-template #reservation>
+        <ion-col>
+          <ion-label>可預約</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-button (click)="onOrdered(idx)">
+            點餐
+          </ion-button>
+        </ion-col>
+      </ng-template>
     </ion-row>
   </ion-grid>
-
 </ion-content>
