@@ -1,5 +1,5 @@
 {
-  "name": "foodorder_app",
+  "name": "foodorder-app",
   "integrations": {
     "capacitor": {}
   },
