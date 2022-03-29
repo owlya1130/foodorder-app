@@ -44,7 +44,7 @@
 
         <ng-container formArrayName="mealIngredients">
           <ng-container *ngFor="let mealIngredientForm of mealIngredients.controls; let i = index">
-            <ion-row [formGroup]="mealIngredientForm" style="width: 95%;">
+            <ion-row formGroupName="mealIngredientForm" style="width: 95%;">
               <ion-col size="6" formGroupName="uid">
                 <ion-select interface="action-sheet" placeholder="選擇" formControlName="ingredientUid">
                   <ion-select-option [value]="ingredient.uid" *ngFor="let ingredient of ingredients">{{ingredient.name}}

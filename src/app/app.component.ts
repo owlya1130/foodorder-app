@@ -12,5 +12,7 @@ export class AppComponent {
     { title: '庫存管理', url: '/inventory-management', icon: 'storefront-outline' },
     { title: '餐點及價格管理', url: '/meal-and-price-management', icon: 'cash-outline' }
   ];
-  constructor() { }
+  constructor() {
+    window.screen.orientation.lock('landscape');
+   }
 }
