@@ -13,7 +13,7 @@ import { RestockIngredientComponent } from './dialogs/restock-ingredient/restock
 })
 export class InventoryManagementPage implements OnInit, AfterViewInit {
 
-  ingredients: Ingredient[] = [];
+  ingredients: IngredientView[] = [];
   constructor(
     private ingredientSvc: IngredientService,
     private dlgSvc: DialogService
@@ -30,7 +30,15 @@ export class InventoryManagementPage implements OnInit, AfterViewInit {
     const subscriber = this.ingredientSvc
       .findAll()
       .subscribe((data: Ingredient[]) => {
-        this.ingredients = data;
+        this.ingredients = [];
+        data.forEach(d=>{
+          const ingredientView = d as IngredientView;
+          ingredientView.totalQuantity = 0;
+          ingredientView.quantityDetails.forEach(qtyDetail=>{
+            ingredientView.totalQuantity += qtyDetail.qty;
+          });
+          this.ingredients.push(ingredientView);
+        });
         subscriber.unsubscribe();
       });
   }
@@ -58,4 +66,8 @@ export class InventoryManagementPage implements OnInit, AfterViewInit {
       () => { this.getIngredients(); }
     );
   }
+}
+
+interface IngredientView extends Ingredient {
+  totalQuantity: number;
 }

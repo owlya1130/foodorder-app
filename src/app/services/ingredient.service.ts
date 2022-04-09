@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Consume } from '../interfaces/consume';
 import { Ingredient } from '../interfaces/ingredient';
+import { Restock } from '../interfaces/restock';
 
 @Injectable({
   providedIn: 'root'
@@ -22,33 +24,15 @@ export class IngredientService {
     }
   }
 
-  restockIngredient(ingredientUid: string, theQty: number, theComment: string) {
-    const ingredientBO = {
-      uid: ingredientUid,
-      qty: theQty,
-      comment: theComment
-    };
-    return this.http.patch<Ingredient>(`${environment.apiHist}/ingredient/restock`, ingredientBO);
+  restockIngredient(restockBO: Restock) {
+    return this.http.patch<Ingredient>(`${environment.apiHist}/ingredient/restock`, restockBO);
   }
 
-  consumeIngredient(ingredientUid: string, theQty: number, theAction: ConsumeType, thePackagedQty: number, theComment: string) {
-    const ingredientBO = {
-      uid: ingredientUid,
-      qty: theQty,
-      action: theAction,
-      packagedQty: thePackagedQty,
-      comment: theComment
-    };
-    return this.http.patch<Ingredient>(`${environment.apiHist}/ingredient/consume`, ingredientBO);
+  consumeIngredient(consumeBO: Consume) {
+    return this.http.patch<Ingredient>(`${environment.apiHist}/ingredient/consume`, consumeBO);
   }
 
   getPackageList(ingredientUid: string) {
     return this.http.get<Ingredient[]>(`${environment.apiHist}/ingredient/${ingredientUid}/packagelist`);
   }
-}
-
-export enum ConsumeType {
-  Expired,
-	Packaged,
-  Sold
 }

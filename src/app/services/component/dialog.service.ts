@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ComponentProps, ComponentRef } from '@ionic/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,8 @@ export class DialogService {
 
   constructor(
     private modalCtrller: ModalController,
-    private alertCtrller: AlertController
+    private alertCtrller: AlertController,
+    private toastCtrller: ToastController
   ) { }
 
   async presentModal(
@@ -76,5 +77,20 @@ export class DialogService {
 
     await alert.present();
     return alert;
+  }
+
+  /**
+   * @param msg
+   * @param level 'success', 'warning', 'danger'
+   * @param pos 'bottom', 'middle', 'top'
+   */
+  async presentToast(msg: string, level = 'success', pos: 'middle' | 'top' | 'bottom' = 'middle') {
+    const toast = await this.toastCtrller.create({
+      message: msg,
+      color: level,
+      position: pos,
+      duration: 1000
+    });
+    toast.present();
   }
 }

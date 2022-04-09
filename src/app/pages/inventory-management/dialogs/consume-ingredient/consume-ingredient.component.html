@@ -9,62 +9,53 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-item>
-    <ion-label>材料</ion-label>
-    <ion-input readonly [value]="ingredient.name"></ion-input>
-  </ion-item>
+  <div [formGroup]="form">
+    <ion-item>
+      <ion-label>材料</ion-label>
+      <ion-input readonly [value]="ingredient.name"></ion-input>
+    </ion-item>
 
-  <ion-radio-group [(ngModel)]="action">
-    <ion-row>
-      <ion-col>
-        <ion-item>
-          <ion-label>過期</ion-label>
-          <ion-radio slot="start" mode="md" value="expired"></ion-radio>
-        </ion-item>
-      </ion-col>
-      <ion-col *ngIf="packageToIngredient !== null">
-        <ion-item>
-          <ion-label>分裝</ion-label>
-          <ion-radio slot="start" mode="md" value="packaged"></ion-radio>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-  </ion-radio-group>
-  <ion-item>
-    <ion-label>數量</ion-label>
-    <ion-input type="number" required [(ngModel)]="consumeQty"></ion-input>
-  </ion-item>
-  <ion-item *ngIf="action === 'packaged'">
-    <ion-label>每份分裝成{{packageToIngredient.name}}</ion-label>
-    <ion-input type="number" required [(ngModel)]="packageToIngredient.packageQty"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>備註</ion-label>
-    <ion-textarea [(ngModel)]="comment"></ion-textarea>
-  </ion-item>
+    <ion-radio-group [(ngModel)]="actionType" [ngModelOptions]="{standalone: true}">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>過期</ion-label>
+            <ion-radio slot="start" mode="md" value="expired"></ion-radio>
+          </ion-item>
+        </ion-col>
+        <ion-col *ngIf="packageToIngredient !== null">
+          <ion-item>
+            <ion-label>分裝</ion-label>
+            <ion-radio slot="start" mode="md" value="packaged"></ion-radio>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-radio-group>
+    <ion-item>
+      <ion-label>數量</ion-label>
+      <ion-input type="number" formControlName="qty"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="actionType === 'packaged'">
+      <ion-label>每份分裝成{{packageToIngredient.name}}</ion-label>
+      <ion-input type="number" formControlName="packagedQty"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>備註</ion-label>
+      <ion-textarea formControlName="comment"></ion-textarea>
+    </ion-item>
+  </div>
 </ion-content>
 <ion-footer>
   <ion-row>
     <ion-col>
-      <ion-button
-        color="danger"
-        fill="solid"
-        shape="round"
-        expand="block"
-        (click)="close()"
-      >
+      <ion-button color="danger" fill="solid" shape="round" expand="block" (click)="close()">
         取消
       </ion-button>
     </ion-col>
     <ion-col>
-      <ion-button
-        color="success"
-        fill="solid"
-        shape="round"
-        expand="block"
-        [disabled]="consumeQty === 0 || consumeQty === null"
-        (click)="onSubmit()"
-      >
+      <ion-button color="success" fill="solid" shape="round" expand="block"
+      [disabled]="form.invalid" (click)="onSubmit()">
+
         確定
       </ion-button>
     </ion-col>

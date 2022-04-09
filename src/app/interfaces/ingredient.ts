@@ -1,7 +1,9 @@
+import { IngredientQuantity } from "./ingredient-quantity";
+
 export interface Ingredient {
   uid: string | null;
   name: string;
-  qty: number;
   packageByUID: string | null;
   packageQty: number | null;
+  quantityDetails: IngredientQuantity[];
 }

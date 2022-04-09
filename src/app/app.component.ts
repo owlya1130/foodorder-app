@@ -14,5 +14,5 @@ export class AppComponent {
   ];
   constructor() {
     window.screen.orientation.lock('landscape');
-   }
+  }
 }

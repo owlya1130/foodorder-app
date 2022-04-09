@@ -1,7 +1,9 @@
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Ingredient } from 'src/app/interfaces/ingredient';
-import { ConsumeType, IngredientService } from 'src/app/services/ingredient.service';
+import { IngredientActionType } from 'src/app/interfaces/ingredient-log';
+import { IngredientService } from 'src/app/services/ingredient.service';
 
 @Component({
   selector: 'app-consume-ingredient',
@@ -12,9 +14,14 @@ export class ConsumeIngredientComponent implements OnInit {
 
   @Input() ingredient: Ingredient;
   packageToIngredient: Ingredient = null;
-  action = 'expired';
-  consumeQty = 1;
-  comment = '';
+  form = new FormGroup({
+    uid: new FormControl('', Validators.required),
+    actionType: new FormControl(IngredientActionType.Expired),
+    qty: new FormControl(0, [Validators.required, Validators.min(1)]),
+    comment: new FormControl(''),
+    packagedQty: new FormControl(1, [Validators.required, Validators.min(1)])
+  });
+  actionType = 'expired';
 
   constructor(
     private ingredientSvc: IngredientService,
@@ -28,26 +35,32 @@ export class ConsumeIngredientComponent implements OnInit {
         const packageList = data;
         if (packageList.length === 1) {
           this.packageToIngredient = packageList[0];
+          this.form.patchValue({
+            packagedQty: this.packageToIngredient.packageQty
+          });
         }
         subscriber.unsubscribe();
       });
+    this.form.patchValue({
+      uid: this.ingredient.uid
+    });
   }
 
   onSubmit() {
-    const action = this.action === 'packaged'? ConsumeType.Packaged : ConsumeType.Expired;
+    if (this.actionType === 'packaged') {
+      this.form.patchValue({
+        actionType: IngredientActionType.PackagedFrom
+      });
+    } else {
+      this.form.patchValue({
+        actionType: IngredientActionType.Expired
+      });
+    }
     const subscriber = this.ingredientSvc
-      .consumeIngredient(
-        this.ingredient.uid,
-        this.consumeQty,
-        action,
-        this.packageToIngredient?.packageQty,
-        this.comment
-      )
+      .consumeIngredient(this.form.getRawValue())
       .subscribe(res => {
         if (res.uid !== null) {
           this.modalCtrller.dismiss();
-        } else {
-          alert('出貨失敗');
         }
         subscriber.unsubscribe();
       });

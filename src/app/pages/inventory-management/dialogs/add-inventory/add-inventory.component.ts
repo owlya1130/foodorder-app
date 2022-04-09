@@ -12,9 +12,7 @@ export class AddInventoryComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
     uid: new FormControl(null),
-    name: new FormControl('', Validators.required),
-    qty: new FormControl(1, Validators.required),
-    unit: new FormControl('', Validators.required)
+    name: new FormControl('', Validators.required)
   });
 
   constructor(

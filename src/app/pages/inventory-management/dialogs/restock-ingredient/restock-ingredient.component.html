@@ -9,18 +9,22 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list>
+  <ion-list [formGroup]="form">
     <ion-item>
       <ion-label>材料</ion-label>
       <ion-input readonly [value]="ingredient.name"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>數量</ion-label>
-      <ion-input type="number" required [(ngModel)]="addQty"></ion-input>
+      <ion-input type="number" formControlName="qty"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>成本</ion-label>
+      <ion-input type="number" formControlName="cost"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>備註</ion-label>
-      <ion-textarea [(ngModel)]="comment"></ion-textarea>
+      <ion-textarea formControlName="comment"></ion-textarea>
     </ion-item>
   </ion-list>
 </ion-content>
@@ -43,7 +47,7 @@
         fill="solid"
         shape="round"
         expand="block"
-        [disabled]="addQty === 0 || addQty === null"
+        [disabled]="form.invalid"
         (click)="onSubmit()"
       >
         確定

@@ -43,8 +43,8 @@
         </ion-item-divider>
 
         <ng-container formArrayName="mealIngredients">
-          <ng-container *ngFor="let mealIngredientForm of mealIngredients.controls; let i = index">
-            <ion-row formGroupName="mealIngredientForm" style="width: 95%;">
+          <ng-container *ngFor="let mealIngredientForm of mealIngredients.controls; let idx = index">
+            <ion-row [formGroupName]="idx" style="width: 95%;">
               <ion-col size="6" formGroupName="uid">
                 <ion-select interface="action-sheet" placeholder="選擇" formControlName="ingredientUid">
                   <ion-select-option [value]="ingredient.uid" *ngFor="let ingredient of ingredients">{{ingredient.name}}
@@ -55,7 +55,7 @@
                 <ion-input formControlName="ingredientQty" placeholder="數量" type="number"></ion-input>
               </ion-col>
               <ion-col size="1">
-                <ion-button (click)="deleteIngredient(i)" fill="clear">
+                <ion-button (click)="deleteIngredient(idx)" fill="clear">
                   <ion-icon name="trash-outline"></ion-icon>
                 </ion-button>
               </ion-col>
