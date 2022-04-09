@@ -5,16 +5,19 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
-<div style="text-align: center;">
-  <input type="date" [value]="queryDateStr" (change)="onQueryDateChg($event)">
-</div>
+<ion-row>
+  <ion-col style="margin-top: 20px;">    
+    <div style="text-align: center;">
+      <input type="date" [value]="queryDateStr" (change)="onQueryDateChg($event)">
+    </div>
+  </ion-col>
+</ion-row>
 
 <ion-content>
   <div fxLayout="row" fxLayoutAlign="start center">
     <div fxLayout="column" fxLayoutAlign="start center">
-      <div class="cell cell-header">&nbsp;</div>
-      <div class="cell" *ngFor="let diningTable of diningTables">
+      <div class="cell cell-header" style="border: none;">&nbsp;</div>
+      <div class="cell" *ngFor="let diningTable of diningTables" style="width: 200px;">
         <ion-label>
           {{diningTable.name}}({{diningTable.seats}}人)
         </ion-label>

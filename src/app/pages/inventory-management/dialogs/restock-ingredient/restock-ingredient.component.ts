@@ -32,7 +32,6 @@ export class RestockIngredientComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.form.getRawValue());
     const subscriber = this.ingredientSvc
       .restockIngredient(this.form.getRawValue())
       .subscribe(res => {
