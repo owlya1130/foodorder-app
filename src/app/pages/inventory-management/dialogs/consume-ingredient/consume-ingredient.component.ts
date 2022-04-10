@@ -21,7 +21,7 @@ export class ConsumeIngredientComponent implements OnInit {
     comment: new FormControl(''),
     packagedQty: new FormControl(1, [Validators.required, Validators.min(1)])
   });
-  actionType = 'expired';
+  actionType = 'consume';
 
   constructor(
     private ingredientSvc: IngredientService,
@@ -51,9 +51,13 @@ export class ConsumeIngredientComponent implements OnInit {
       this.form.patchValue({
         actionType: IngredientActionType.PackagedFrom
       });
-    } else {
+    } else if (this.actionType === 'expired') {
       this.form.patchValue({
         actionType: IngredientActionType.Expired
+      });
+    } else if (this.actionType === 'consume') {
+      this.form.patchValue({
+        actionType: IngredientActionType.Consume
       });
     }
     const subscriber = this.ingredientSvc

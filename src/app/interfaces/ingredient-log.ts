@@ -1,5 +1,5 @@
 export interface IngredientLog {
-  uid: number;
+	uid: number;
 	batchno: string;
 	time: Date;
 	action: IngredientActionType;
@@ -11,6 +11,7 @@ export enum IngredientActionType {
 	Restock,
 	Expired,
 	PackagedFrom,
-  PackagedTo,
-	Sold
+	PackagedTo,
+	Sold,
+	Consume
 }
